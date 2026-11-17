@@ -10,7 +10,7 @@ An interactive presentation about AI for people with no prior knowledge, in **En
 - Scroll, or use `←` `→` to move between chapters. The menu at the top slides away and comes back when you move the mouse to the top edge.
 - **🇸🇪 SV | 🇬🇧 EN** in the menu, or the `L` key, switches language.
 - Open the talk track in a second window (for example on your laptop screen while the deck is on the projector). With **Drive deck** (`D`) on, the deck follows the talk track; with **Follow deck** (`F`) on, the talk track follows the deck. The language follows too. Both windows must be open in the same browser.
-- `N` shows speaker notes in the deck, `M` turns animations off, `H` pins the menu. The theme button switches between System, Light and Dark.
+- `N` shows speaker notes in the deck, `M` turns animations off, `H` pins the menu. The theme button switches between System, Light and Dark (Dark is the default).
 
 ## Run it locally
 

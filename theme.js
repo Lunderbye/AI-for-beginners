@@ -1,4 +1,4 @@
-// Tema för presentationen (index.html) och talk track (talk.html): System, Ljust eller Mörkt.
+// Tema för presentationen (index.html) och talk track (talk.html): System, Ljust eller Mörkt (standard: Mörkt).
 // "System" följer macOS-inställningen och ändras med den. Valet delas mellan sidorna (samma origin)
 // och slår igenom direkt i alla öppna fönster. Laddas i <head> för att undvika blink.
 (() => {
@@ -7,7 +7,7 @@
   const LABEL = { system: "System", light: "Ljust", dark: "Mörkt" };
   const ICON = { system: "◐", light: "☀", dark: "☾" };
   const mq = matchMedia("(prefers-color-scheme: light)");
-  const pref = () => { try { const v = localStorage.getItem(KEY); return ORDER.includes(v) ? v : "system"; } catch (e) { return "system"; } };
+  const pref = () => { try { const v = localStorage.getItem(KEY); return ORDER.includes(v) ? v : "dark"; } catch (e) { return "dark"; } };
 
   const apply = () => {
     const p = pref();
