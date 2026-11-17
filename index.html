@@ -1,0 +1,545 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI för nybörjare</title>
+  <meta name="description" content="En interaktiv introduktion till AI på svenska: historien, maskininlärning, språkmodeller, prompt engineering, embeddings, RAG, agenter, automatisering och risker." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css?v=18" />
+  <script src="i18n.js?v=18"></script>
+  <script src="theme.js?v=18"></script>
+</head>
+<body>
+  <nav class="nav">
+    <div class="brand"><i class="dot"></i><span>AI för nybörjare</span></div>
+    <div class="chapters" id="chapterNav"></div>
+    <a class="btn" href="talk.html" target="ai-talk" title="Öppna talk track i ett eget fönster">🎙 Talk track</a>
+    <button id="notesBtn" title="Presentatörsanteckningar (N)">Anteckningar <span class="kbd">N</span></button>
+    <button data-theme-btn title="Tema">◐ System</button>
+    <button class="lang-btn" data-lang-btn title="Språk">SV</button>
+  </nav>
+  <div class="progress" id="progress"></div>
+
+  <!-- 0 · HERO -->
+  <section class="chapter" id="hero" data-title="Start">
+    <canvas id="heroCanvas" aria-hidden="true"></canvas>
+    <div class="inner">
+      <div class="hero-kicker reveal">En introduktion · utan förkunskaper</div>
+      <h1 class="reveal d1">Artificiell intelligens<br /><span class="grad">från hype till vardag</span></h1>
+      <p class="lede reveal d2">Hur hamnade vi här, hur fungerar det egentligen, och vad kan du göra med det redan idag? Vi går från Alan Turing till <span class="en">AI agents</span>, ett steg i taget.</p>
+      <div class="hero-chat reveal d3" aria-live="polite">
+        <div class="bubble user"><span class="who">DU</span><span id="heroQ"></span></div>
+        <div class="bubble ai"><span class="who">AI</span><span id="heroA"></span></div>
+      </div>
+      <div class="agenda reveal d3"><span>📜 Historien</span><span>🧠 Hur maskiner lär sig</span><span>💬 Språkmodeller</span><span>✍️ Prompt engineering</span><span>📚 RAG</span><span>🤖 Agenter</span><span>⚙️ Automatisering</span><span>⚖️ Risker</span><span>🌍 Energi + kapplöpningen</span></div>
+      <div class="scroll-hint">scrolla eller tryck <span class="kbd">→</span></div>
+    </div>
+  </section>
+
+  <!-- 1 · VAD ÄR AI -->
+  <section class="chapter" id="vad" data-title="1 · Vad är AI?">
+    <div class="bg-blob" style="background:var(--accent);left:-200px;top:10%"></div>
+    <div class="inner">
+      <div class="chapter-num">KAPITEL 1</div>
+      <h2 class="reveal">Vad är AI, egentligen?</h2>
+      <p class="lede reveal d1">AI är ett paraplybegrepp. Inuti finns <span class="en">Machine Learning</span>, inuti den <span class="en">Deep Learning</span>, och inuti den det som alla pratar om just nu: <span class="en">Generative AI</span>. Klicka på cirklarna.</p>
+      <div class="split">
+        <div class="reveal d2"><svg class="nest-svg" id="nestSvg" viewBox="0 0 560 470" role="img" aria-label="AI, maskininlärning, djupinlärning och generativ AI som cirklar i varandra"></svg></div>
+        <div class="reveal d2">
+          <div class="panel nest-info" id="nestInfo"></div>
+          <div class="panel" style="margin-top:1rem">
+            <h4>Den stora skillnaden</h4>
+            <div class="rules" id="rules">
+              <div class="rule-row"><span class="lbl">Vanlig programmering</span><div class="rule-flow"><span class="chip">📏 Regler</span><span class="op">+</span><span class="chip">📄 Data</span><span class="op">→</span><span class="chip cpu">💻</span><span class="op">→</span><span class="chip out">✅ Svar</span></div></div>
+              <div class="rule-row"><span class="lbl">Maskininlärning</span><div class="rule-flow"><span class="chip">📄 Data</span><span class="op">+</span><span class="chip">✅ Svar</span><span class="op">→</span><span class="chip cpu">🧠</span><span class="op">→</span><span class="chip out">📏 Regler</span></div></div>
+            </div>
+            <p style="margin:.8rem 0 0;font-size:.92rem">I stället för att <b class="k">skriva reglerna</b> visar vi tusentals exempel, och datorn <b class="k">hittar mönstren själv</b>.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 · HISTORIEN -->
+  <section class="chapter" id="historia" data-title="2 · Historien">
+    <div class="inner">
+      <div class="chapter-num">KAPITEL 2</div>
+      <h2 class="reveal">80 år av drömmar, vintrar och genombrott</h2>
+      <p class="lede reveal d1">AI är inte nytt. Det har gått i vågor: stora förhoppningar, besvikelser (<span class="en">AI winters</span>) och sedan plötsliga språng. Linjen visar ungefär hur stor hypen var. Klicka på en händelse eller tryck på ▶.</p>
+      <div class="tl-wrap reveal d2">
+        <svg class="tl-svg" id="tlSvg" viewBox="0 0 1200 352" role="img" aria-label="Tidslinje över AI:s historia med hype-kurva"></svg>
+        <div class="tl-ctl">
+          <div class="tl-eras" id="tlEras"></div>
+          <div class="btn-row"><button id="tlPrev">← Föregående</button><button class="primary" id="tlPlay">▶ Spela upp</button><button id="tlNext">Nästa →</button></div>
+        </div>
+        <div class="panel tl-card" id="tlCard"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 · VARFÖR NU -->
+  <section class="chapter" id="varfor" data-title="3 · Varför nu?">
+    <div class="bg-blob" style="background:var(--green);right:-200px;top:20%"></div>
+    <div class="inner">
+      <div class="chapter-num">KAPITEL 3</div>
+      <h2 class="reveal">Varför exploderade AI-fältet just nu?</h2>
+      <p class="lede reveal d1">Idéerna fanns redan på 1950-talet. Det som saknades var tre ingredienser, och runt 2012–2022 kom alla tre på plats samtidigt.</p>
+      <div class="ingr">
+        <div class="panel reveal d1"><svg id="ingData" viewBox="0 0 300 150"></svg><h3>📚 Data</h3><p>Internet gav oss biljoner ord, miljarder bilder och filmer att lära av.</p><div class="stat" data-count="5000000000" data-suffix="+">0<small>människor online i världen (ungefär)</small></div></div>
+        <div class="panel reveal d2"><svg id="ingGpu" viewBox="0 0 300 150"></svg><h3>⚡ Beräkningskraft</h3><p><span class="en">GPU</span>:er, gjorda för datorspel, visade sig perfekta för att träna neurala nätverk.</p><div class="stat" data-count="1000000" data-prefix="×" >0<small>mer datorkraft i de största träningarna än för 15 år sedan (storleksordning)</small></div></div>
+        <div class="panel reveal d3"><svg id="ingAlgo" viewBox="0 0 300 150"></svg><h3>💡 Algoritmer</h3><p>2017 kom <span class="en">Transformer</span>: en arkitektur som läser hela texten på en gång och förstår sammanhang.</p><div class="stat" data-count="175000000000" >0<small>parametrar i GPT-3 (2020)</small></div></div>
+      </div>
+      <div class="recipe reveal d3" id="recipe">
+        <span class="ing" style="border-color:var(--cyan);color:var(--cyan)">📚 Data</span><span class="eq">+</span>
+        <span class="ing" style="border-color:var(--green);color:var(--green)">⚡ GPU</span><span class="eq">+</span>
+        <span class="ing" style="border-color:var(--orange);color:var(--orange)">💡 Transformer</span><span class="eq">=</span>
+        <span class="res">✨ ChatGPT-ögonblicket</span>
+        <button id="mixBtn" class="primary">Blanda</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 · HUR LÄR SIG EN MASKIN -->
+  <section class="chapter" id="lara" data-title="4 · Hur lär sig en maskin?">
+    <div class="inner">
+      <div class="chapter-num">KAPITEL 4</div>
+      <h2 class="reveal">Hur lär sig en maskin?</h2>
+      <p class="lede reveal d1">Testa själv. Varje prick är ett djur: hur tungt det är och hur gärna det apporterar. Tryck <b class="k">Träna</b> och se hur modellen gissar, mäter felet och justerar sig, om och om igen. Det kallas <span class="en">training</span>.</p>
+      <div class="learn reveal d2">
+        <div>
+          <canvas id="learnCanvas" width="880" height="605" aria-label="Klicka för att lägga till djur"></canvas>
+          <div class="btn-row" style="margin-top:.6rem">
+            <span class="dim" style="font-size:.85rem">Klicka i rutan för att lägga till:</span>
+            <button id="addCat" class="on">🐱 Katt</button><button id="addDog">🐶 Hund</button>
+            <button id="trainBtn" class="primary">▶ Träna</button><button id="learnReset">↺ Nollställ</button>
+          </div>
+        </div>
+        <div class="panel">
+          <h4>Så lär sig modellen</h4>
+          <ol class="steps-list" id="learnSteps">
+            <li>Gissa en linje (slumpmässigt)</li>
+            <li>Räkna hur fel den har (<span class="en">loss</span>)</li>
+            <li>Justera lite åt rätt håll</li>
+            <li>Upprepa tusentals gånger</li>
+          </ol>
+          <div class="meters">
+            <div class="meter"><b id="mEpoch">0</b><span>Varv (<i>epochs</i>)</span></div>
+            <div class="meter"><b id="mAcc">–</b><span>Träffsäkerhet</span></div>
+            <div class="meter"><b id="mLoss">–</b><span>Fel (<i>loss</i>)</span></div>
+          </div>
+          <div class="guess" id="learnGuess">Håll musen över rutan när modellen är tränad.</div>
+          <p style="font-size:.9rem;margin-bottom:0">Det här är exakt samma princip som i ChatGPT, bara med <b class="k">två</b> rattar i stället för <b class="k">hundratals miljarder</b>.</p>
+          <div class="learn-net">
+            <h4>Inuti ett neuralt nätverk</h4>
+            <svg id="learnNet" viewBox="0 0 440 200" role="img" aria-label="Neuralt nätverk där kopplingarna lyser upp lager för lager under träningen"></svg>
+            <div class="ln-cap" id="learnNetCap"></div>
+            <p class="foot" style="margin:.3rem 0 0">Vår modell har två rattar. Ett riktigt nätverk har lager på lager av dem, och vid <b class="k">varje varv</b> tänds kopplingarna: först <span style="color:var(--accent)">framåt</span> (gissa), sedan <span style="color:var(--orange)">bakåt</span> (justera).</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 · NEURALA NÄTVERK -->
+  <section class="chapter" id="natverk" data-title="5 · Neurala nätverk">
+    <div class="bg-blob" style="background:var(--pink);left:-220px;bottom:0"></div>
+    <div class="inner">
+      <div class="chapter-num">KAPITEL 5</div>
+      <h2 class="reveal">Neurala nätverk: inspirerade av hjärnan</h2>
+      <p class="lede reveal d1">Ett <span class="en">neural network</span> är lager av enkla "neuroner" som skickar signaler vidare. Varje koppling har en vikt (<span class="en">weight</span>), som en volymratt. Slå på egenskaper till vänster och se signalen flöda.</p>
+      <div class="nn reveal d2">
+        <div class="nn-in" id="nnIn"></div>
+        <svg id="nnSvg" viewBox="0 0 520 360" role="img" aria-label="Neuralt nätverk med indata, dolt lager och utdata"></svg>
+        <div class="nn-out panel" id="nnOut">
+          <div class="lab">🐱 Katt</div><div class="bar"><i style="background:var(--pink)"></i><span id="pCat">50 %</span></div>
+          <div class="lab">🐶 Hund</div><div class="bar"><i style="background:var(--cyan)"></i><span id="pDog">50 %</span></div>
+          <small class="dim">Utdata = sannolikheter, inte säkerhet.</small>
+        </div>
+      </div>
+      <div class="layers-strip reveal d3">
+        <div class="ly"><span class="e">🖼️</span>Pixlar</div><span class="ar">→</span>
+        <div class="ly"><span class="e">〰️</span>Kanter</div><span class="ar">→</span>
+        <div class="ly"><span class="e">🔺</span>Former</div><span class="ar">→</span>
+        <div class="ly"><span class="e">👂</span>Öron, ögon</div><span class="ar">→</span>
+        <div class="ly" style="border-color:var(--accent)"><span class="e">🐱</span>"Katt!"</div>
+      </div>
+      <p class="foot" style="text-align:center"><span class="en">Deep Learning</span> = många lager. Varje lager hittar lite mer abstrakta mönster än det förra.</p>
+    </div>
+  </section>
+
+  <!-- 6 · SPRÅKMODELLER -->
+  <section class="chapter" id="llm" data-title="6 · Språkmodeller">
+    <div class="inner">
+      <div class="chapter-num">KAPITEL 6</div>
+      <h2 class="reveal">Språkmodeller: världens bästa ordgissare</h2>
+      <p class="lede reveal d1">En <span class="en">Large Language Model (LLM)</span> gör i grunden en sak: den gissar <b class="k">nästa ordbit</b>, om och om igen. Först delas texten upp i <span class="en">tokens</span>.</p>
+      <div class="split even">
+        <div class="panel reveal d2">
+          <h4>1 · Text blir tokens</h4>
+          <textarea class="tok-in" id="tokIn" rows="2" spellcheck="false">Hej! Jag heter Anna och jag tycker om kanelbullar.</textarea>
+          <div class="tokens" id="tokOut"></div>
+          <div class="tok-stats"><span><b id="tokN">0</b> tokens</span><span><b id="tokC">0</b> tecken</span><span><b id="tokR">0</b> tecken/token</span></div>
+          <p class="foot">Förenklad illustration. Svenska ord delas ofta i fler bitar än engelska, eftersom modellerna mest tränats på engelska.</p>
+        </div>
+        <div class="panel reveal d3">
+          <h4>2 · Gissa nästa token</h4>
+          <div class="btn-row" id="npStarts"></div>
+          <div class="np-sentence" id="npSent" style="margin-top:.8rem"></div>
+          <div class="np-bars" id="npBars"></div>
+          <div class="slider-row">
+            <label for="npTemp"><span class="en">Temperature</span></label>
+            <input type="range" id="npTemp" min="0.1" max="2" step="0.1" value="1" />
+            <span class="val" id="npTempV">1.0</span>
+          </div>
+          <div class="temp-hint" id="npTempHint"></div>
+          <div class="btn-row" style="margin-top:.7rem"><button class="primary" id="npGen">✨ Låt AI:n välja</button><button id="npReset">↺ Börja om</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 · TRÄNING -->
+  <section class="chapter" id="traning" data-title="7 · Så tränas en LLM">
+    <div class="bg-blob" style="background:var(--cyan);right:-180px;top:5%"></div>
+    <div class="inner">
+      <div class="chapter-num">KAPITEL 7</div>
+      <h2 class="reveal">Från internet till assistent: fyra steg</h2>
+      <p class="lede reveal d1">En chatbot föds inte färdig. Den läser först enorma mängder text, lär sig sedan vara hjälpsam, och får till sist feedback från människor. Klicka igenom stegen.</p>
+      <div class="stages reveal d2" id="stages"></div>
+      <div class="stage-detail reveal d3">
+        <div id="stageText"></div>
+        <div class="stage-viz" id="stageViz"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 · MODELLER -->
+  <section class="chapter" id="modeller" data-title="8 · Modeller">
+    <div class="inner">
+      <div class="chapter-num">KAPITEL 8</div>
+      <h2 class="reveal">Modellerna: vem är vem?</h2>
+      <p class="lede reveal d1">Det finns många modeller, från jättar i datacenter till små modeller som körs på din dator. Några är stängda (<span class="en">closed</span>), andra har öppna vikter (<span class="en">open weights</span>) som vem som helst kan ladda ner.</p>
+      <div class="mva reveal d1">
+        <div class="side"><div class="e">⚙️</div><b>Modellen</b><small>motorn · t.ex. GPT, Claude, Gemini</small></div>
+        <div class="big-emoji">→</div>
+        <div class="side"><div class="e">🚗</div><b>Appen / produkten</b><small>bilen · t.ex. ChatGPT, Copilot, Claude.ai</small></div>
+      </div>
+      <div class="filters reveal d2" id="mFilters"></div>
+      <div class="models reveal d2" id="models"></div>
+      <div class="concepts reveal d3">
+        <div class="panel">
+          <h4><span class="en">Context window</span> · arbetsminne</h4>
+          <p style="font-size:.9rem;margin:.2rem 0">Hur mycket text modellen kan "ha framför sig" samtidigt.</p>
+          <input type="range" id="ctxR" min="0" max="5" step="1" value="3" style="width:100%;accent-color:var(--accent-fill)" />
+          <div class="ctx-bar"><i id="ctxBar"></i></div>
+          <div style="font-weight:700" id="ctxTxt"></div>
+          <div class="books" id="ctxBooks"></div>
+        </div>
+        <div class="panel">
+          <h4><span class="en">Multimodal</span> · fler sinnen</h4>
+          <p style="font-size:.9rem;margin:.2rem 0">Moderna modeller tar emot och skapar mer än text.</p>
+          <div class="mm-row">
+            <div class="io"><span>📝</span><span>🖼️</span><span>🎤</span><span>🎬</span></div>
+            <div class="mm-core">AI</div>
+            <div class="io"><span>💬</span><span>🎨</span><span>🔊</span><span>💻</span></div>
+          </div>
+        </div>
+        <div class="panel">
+          <h4><span class="en">Reasoning models</span> · tänker först</h4>
+          <p style="font-size:.9rem;margin:.2rem 0">Nyare modeller "tänker högt" innan de svarar. Långsammare, men bättre på svåra problem.</p>
+          <button id="thinkBtn" style="margin-top:.4rem">🤔 Hur många "r" finns i "jordgubbsträd"?</button>
+          <div class="think-steps" id="thinkSteps"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9 · PROMPT ENGINEERING -->
+  <section class="chapter" id="prompt" data-title="9 · Prompt engineering">
+    <div class="bg-blob" style="background:var(--yellow);left:-200px;top:30%"></div>
+    <div class="inner">
+      <div class="chapter-num">KAPITEL 9</div>
+      <h2 class="reveal"><span class="en" style="font-style:normal;color:inherit">Prompt engineering</span>: konsten att fråga</h2>
+      <p class="lede reveal d1">En <span class="en">prompt</span> är det du skriver till AI:n. Kvaliteten på svaret beror mycket på kvaliteten på frågan. Bygg en bättre prompt genom att slå på delarna.</p>
+      <div class="pb reveal d2">
+        <div class="pb-parts" id="pbParts"></div>
+        <div>
+          <h4>Din prompt</h4>
+          <div class="pb-prompt" id="pbPrompt"></div>
+          <div class="q-meter"><span class="dim mono" style="font-size:.75rem">KVALITET</span><div class="t"><i id="pbQ"></i></div><b id="pbQt"></b></div>
+          <div class="pb-answer" id="pbAns"></div>
+        </div>
+      </div>
+      <div class="tips reveal d3">
+        <div class="tip"><div class="e">🎯</div><b>Var specifik</b><small>"Skriv ett mejl" → "Skriv ett vänligt mejl på 5 meningar till…"</small></div>
+        <div class="tip"><div class="e">🧩</div><b>Ge exempel</b><small>Visa ett par exempel på vad du vill ha (<i>few-shot</i>).</small></div>
+        <div class="tip"><div class="e">🪜</div><b>Steg för steg</b><small>Be den tänka igenom problemet i steg (<i>chain of thought</i>).</small></div>
+        <div class="tip"><div class="e">🔁</div><b>Iterera</b><small>Första svaret är ett utkast. Säg vad som ska bli bättre.</small></div>
+        <div class="tip"><div class="e">🔒</div><b>Tänk på datan</b><small>Klistra inte in personuppgifter eller hemligheter i publika tjänster.</small></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 · HALLUCINATIONER -->
+  <section class="chapter" id="hallucination" data-title="10 · Hallucinationer">
+    <div class="inner">
+      <div class="chapter-num">KAPITEL 10</div>
+      <h2 class="reveal">När AI:n hittar på: <span class="en" style="font-style:normal">hallucinations</span></h2>
+      <p class="lede reveal d1">En språkmodell är byggd för att låta <b class="k">trovärdig</b>, inte för att vara <b class="k">sann</b>. Den kan svara självsäkert på saker den inte vet. Gissa: vilka av de här AI-svaren är sanna? Klicka för att vända korten.</p>
+      <div class="split">
+        <div class="reveal d2"><div class="quiz" id="quiz"></div>
+          <div class="parrot"><span class="e">🦜</span><div><b>Tänk "en extremt beläst papegoja"</b><br /><small class="dim">Den har läst nästan allt, kan kombinera det briljant, men vet inte alltid vad som är sant.</small></div></div>
+        </div>
+        <div class="reveal d3">
+          <h4>Andra begränsningar</h4>
+          <div class="limits">
+            <div class="limit"><span class="e">📅</span><div><b><span class="en">Knowledge cutoff</span></b><small>Modellen vet bara det som fanns i träningsdatan, fram till ett visst datum.</small></div></div>
+            <div class="limit"><span class="e">⚖️</span><div><b><span class="en">Bias</span> · snedvridning</b><small>Fördomar i datan kan bli fördomar i svaren.</small></div></div>
+            <div class="limit"><span class="e">🔐</span><div><b>Känner inte din organisation</b><small>Den har aldrig sett era interna dokument, rutiner eller kunder.</small></div></div>
+            <div class="limit"><span class="e">🧮</span><div><b>Ojämn på exakthet</b><small>Räkning, citat och källor kan bli fel. Be om källor och kontrollera.</small></div></div>
+          </div>
+          <div class="box" style="margin-top:.8rem;border-color:var(--green)"><b>Lösningen?</b> Ge modellen rätt fakta i stunden. Det är precis vad <span class="en">RAG</span> gör, två kapitel bort.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11 · EMBEDDINGS -->
+  <section class="chapter" id="embeddings" data-title="11 · Embeddings">
+    <div class="bg-blob" style="background:var(--blue);right:-200px;bottom:0"></div>
+    <div class="inner">
+      <div class="chapter-num">KAPITEL 11</div>
+      <h2 class="reveal"><span class="en" style="font-style:normal;color:inherit">Embeddings</span>: betydelse som koordinater</h2>
+      <p class="lede reveal d1">Datorer räknar med siffror, inte ord. En <span class="en">embedding</span> gör om ett ord eller en text till en lång lista med siffror, en punkt på en "karta över betydelse". Ord som betyder liknande saker hamnar nära varandra. Klicka på ett ord.</p>
+      <div class="emb reveal d2">
+        <svg id="embSvg" viewBox="0 0 700 460" role="img" aria-label="Karta över ord där liknande ord ligger nära varandra"></svg>
+        <div class="panel">
+          <h4>Valt ord</h4>
+          <div style="font-size:1.6rem;font-weight:800" id="embWord">–</div>
+          <div class="vec-out" id="embVec">[ … ]</div>
+          <h4 style="margin-top:1rem">Närmaste grannar · och vad som skiljer</h4>
+          <div id="embNb" class="dim">Klicka på ett ord på kartan.</div>
+          <h4 style="margin-top:1rem">Samband</h4>
+          <div id="embAn" class="an-box"><small class="dim">Klicka på ett ord så visas dess analogi, som kung − man + kvinna.</small></div>
+          <button id="embMath" style="margin-top:1rem" class="primary">👑 kung − man + kvinna = ?</button>
+          <p class="foot">Riktiga embeddings har hundratals eller tusentals dimensioner. Här visar vi två.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12 · RAG -->
+  <section class="chapter" id="rag" data-title="12 · RAG">
+    <div class="inner">
+      <div class="chapter-num">KAPITEL 12</div>
+      <h2 class="reveal"><span class="en" style="font-style:normal;color:inherit">RAG</span>: ge AI:n en fusklapp</h2>
+      <p class="lede reveal d1"><span class="en">Retrieval-Augmented Generation</span>: innan modellen svarar letar vi upp de mest relevanta styckena i <b class="k">dina</b> dokument och klistrar in dem i prompten. Exempel: personalhandboken för det påhittade företaget <b class="k">Nordljus AB</b>.</p>
+      <div class="rag-flow reveal d2" id="ragFlow">
+        <div class="rag-step"><div class="e">❓</div><b>Fråga</b><small>användaren frågar</small></div>
+        <div class="rag-step"><div class="e">🔢</div><b><span class="en">Embedding</span></b><small>frågan blir siffror</small></div>
+        <div class="rag-step"><div class="e">🔎</div><b>Sök</b><small>i en <i>vector database</i></small></div>
+        <div class="rag-step"><div class="e">📎</div><b>Berika</b><small>stycken läggs i prompten</small></div>
+        <div class="rag-step"><div class="e">💬</div><b>Svara</b><small>med källhänvisning</small></div>
+      </div>
+      <div class="rag-main reveal d3">
+        <div>
+          <div class="qs" id="ragQs"></div>
+          <h4>Personalhandboken, uppdelad i stycken (<span class="en">chunks</span>)</h4>
+          <div class="docs" id="ragDocs"></div>
+        </div>
+        <div class="rag-ans" id="ragAns"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 13 · AGENTER -->
+  <section class="chapter" id="agenter" data-title="13 · Agenter">
+    <div class="bg-blob" style="background:var(--accent);left:-160px;top:0"></div>
+    <div class="inner">
+      <div class="chapter-num">KAPITEL 13</div>
+      <h2 class="reveal"><span class="en" style="font-style:normal;color:inherit">AI agents</span>: från att svara till att <span class="act-word">göra</span></h2>
+      <p class="lede reveal d1">En chatbot svarar. En <span class="en">agent</span> får ett mål, planerar, använder verktyg (<span class="en">tools</span>), tittar på resultatet och fortsätter tills uppgiften är klar. Ge agenten ett uppdrag.</p>
+      <div class="agent reveal d2">
+        <div>
+          <svg class="loop-svg" id="loopSvg" viewBox="0 0 400 400" role="img" aria-label="Agentloopen: tänk, agera, observera"></svg>
+          <div class="tools" id="aTools"></div>
+        </div>
+        <div>
+          <div class="btn-row" id="aMissions" style="margin-bottom:.6rem"></div>
+          <div class="alog" id="aLog"><div class="dim" style="padding:.5rem">Välj ett uppdrag ovan för att starta agenten.</div></div>
+        </div>
+      </div>
+      <div class="mcp reveal d3">
+        <div class="mcp-side left"><span data-t="kal">📅 Kalender<i class="pkt"></i></span><span data-t="mejl">✉️ Mejl<i class="pkt"></i></span><span data-t="dok">📄 Dokument<i class="pkt"></i></span></div>
+        <div class="mcp-hub" id="mcpHub"><div><span class="en" style="color:#fff">MCP</span><small>Model Context Protocol<br />"USB-C för AI"</small></div></div>
+        <div class="mcp-side right"><span data-t="webb">🌐 Webbsök<i class="pkt"></i></span><span data-t="bok">🎟️ Bokning<i class="pkt"></i></span><span data-t="vad">🌦️ Väder<i class="pkt"></i></span></div>
+      </div>
+      <div class="mcp-msg" id="mcpMsg" aria-live="polite"><span class="dim">MCP väntar på att agenten ska använda ett verktyg …</span></div>
+      </div>
+      <p class="foot" style="text-align:center"><span class="en">MCP</span> är en öppen standard (från 2024) för hur AI-modeller kopplas till verktyg och data. Ett gränssnitt, många verktyg.</p>
+    </div>
+  </section>
+
+  <!-- 14 · AUTOMATISERING -->
+  <section class="chapter" id="automation" data-title="14 · Automatisering">
+    <div class="inner">
+      <div class="chapter-num">KAPITEL 14</div>
+      <h2 class="reveal">Automatisera med AI: en trappa</h2>
+      <p class="lede reveal d1">Du behöver inte börja med agenter. De flesta börjar på nivå 1 och tar ett steg i taget. Klicka på stegen, och välj sedan ett vardagsexempel nedan.</p>
+      <div class="ladder reveal d2" id="ladder"></div>
+      <div class="rung-info panel reveal d2" id="rungInfo"></div>
+      <div class="scen reveal d3" id="scen"></div>
+      <div class="wf" id="wf"></div>
+      <div class="time-cmp" id="timeCmp"></div>
+    </div>
+  </section>
+
+  <!-- 15 · RISKER -->
+  <section class="chapter" id="risker" data-title="15 · Risker + etik">
+    <div class="bg-blob" style="background:var(--red);right:-220px;top:20%"></div>
+    <div class="inner">
+      <div class="chapter-num">KAPITEL 15</div>
+      <h2 class="reveal">Risker, etik och regler</h2>
+      <p class="lede reveal d1">EU:s <span class="en">AI Act</span> delar in AI efter risk: ju högre risk, desto hårdare krav. Klicka på nivåerna. Till höger: det viktigaste att tänka på i vardagen.</p>
+      <div class="risk reveal d2">
+        <div class="pyr"><svg id="pyrSvg" viewBox="0 0 480 380" role="img" aria-label="EU AI Act riskpyramid"></svg><div class="panel" id="pyrInfo" style="margin-top:.8rem"></div></div>
+        <div class="rcards">
+          <div class="rcard"><span class="e">🔒</span><b>Dataskydd · GDPR</b><small>Klistra inte in personuppgifter, kunddata eller hemligheter i publika AI-tjänster. Använd företagets godkända verktyg.</small></div>
+          <div class="rcard"><span class="e">🎭</span><b><span class="en">Deepfakes</span></b><small>Röster, bilder och video kan förfalskas. Var extra vaksam vid brådskande betalningar eller ovanliga önskemål.</small></div>
+          <div class="rcard"><span class="e">©️</span><b>Upphovsrätt</b><small>Vem äger det AI:n skapar, och vad tränades den på? Frågor som fortfarande avgörs.</small></div>
+          <div class="rcard"><span class="e">💉</span><b><span class="en">Prompt injection</span></b><small>Dold text i ett mejl eller en webbsida kan lura en agent att göra fel saker. Därför: människan i loopen.</small></div>
+          <div class="rcard"><span class="e">⚖️</span><b><span class="en">Bias</span></b><small>AI kan förstärka orättvisor, t.ex. vid rekrytering eller kreditbedömning. Granska besluten.</small></div>
+          <div class="rcard"><span class="e">🌍</span><b>Energi och miljö</b><small>Träning och drift kräver mycket el och vatten. Mer om det i nästa kapitel.</small></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 16 · ENERGI -->
+  <section class="chapter" id="energi" data-title="16 · Energi + miljö">
+    <div class="bg-blob" style="background:var(--green);left:-220px;top:25%"></div>
+    <div class="inner">
+      <div class="chapter-num">KAPITEL 16</div>
+      <h2 class="reveal">Varje svar kostar el. <span class="grad">Och svaren blir många.</span></h2>
+      <p class="lede reveal d1">En enskild fråga drar lite ström. Problemet är skalan: miljarder frågor om dagen, allt tyngre uppgifter som bild och video, och chip som blir varmare för varje generation.</p>
+      <div class="en-grid reveal d2">
+        <div class="panel en-calc">
+          <h4>Vad kostar det i el?</h4>
+          <div class="seg" id="enAct"></div>
+          <div class="en-big"><span id="enVal">0</span><small id="enUnit"></small></div>
+          <label class="en-scale"><input type="checkbox" id="enScale"> × 2,5 miljarder frågor om dagen <span class="dim">(ChatGPT, 2025)</span></label>
+          <div class="en-cmp" id="enCmp"></div>
+          <div class="dim en-src" id="enSrc"></div>
+        </div>
+        <div class="en-right">
+          <div class="panel en-rack">
+            <h4>Ett serverrack: förr och nu</h4>
+            <svg id="rackSvg" viewBox="0 0 420 96" role="img" aria-label="Effekt per serverrack: vanligt rack jämfört med AI-rack"></svg>
+            <p class="dim" id="rackCap">Ett AI-rack drar lika mycket som ungefär 15 vanliga och måste kylas med vätska direkt på chippen. Ett enda AI-chip (H100) drar ≈ 700 W, som en mikrovågsugn.</p>
+          </div>
+          <div class="panel en-world">
+            <h4>Datacentrens elanvändning i världen</h4>
+            <svg id="worldSvg" viewBox="0 0 420 146" role="img" aria-label="Datacentrens elanvändning 2024 och 2030 jämfört med Sveriges"></svg>
+          </div>
+        </div>
+      </div>
+      <div class="en-cards reveal d3">
+        <div class="rcard"><span class="e">💧</span><b>Vatten</b><small>Kylning kan kräva mycket vatten. Lite per fråga, men mycket lokalt i torra regioner.</small></div>
+        <div class="rcard"><span class="e">🔌</span><b>Elnätet</b><small>Ett stort AI-datacenter kan behöva lika mycket effekt som en stad. Elnäten hinner inte byggas ut i samma takt.</small></div>
+        <div class="rcard"><span class="e">🏭</span><b>Chip och skrot</b><small>Tillverkningen släpper ut mycket, och hårdvaran byts ofta efter några år.</small></div>
+        <div class="rcard"><span class="e">🔁</span><b>Effektivare = mer</b><small>Varje fråga blir billigare, så vi frågar mer. Totalen växer ändå (<span class="en">Jevons paradox</span>).</small></div>
+        <div class="rcard"><span class="e">🌱</span><b>Vad kan jag göra?</b><small>Välj lagom stor modell, undvik onödig bild och video, och ställ tydliga frågor så att du slipper fråga om.</small></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 17 · KAPPLÖPNINGEN -->
+  <section class="chapter" id="kapplopning" data-title="17 · Kapplöpningen">
+    <div class="bg-blob" style="background:var(--orange);right:-220px;top:15%"></div>
+    <div class="inner">
+      <div class="chapter-num">KAPITEL 17</div>
+      <h2 class="reveal">Kapplöpningen: chip, el och <span class="grad">tusentals miljarder</span></h2>
+      <p class="lede reveal d1">Alla vill ha mer beräkningskraft på en gång. Efterfrågan är större än vad som går att tillverka, och flaskhalsen flyttar runt: från chip till minne till el. Klicka på länkarna i kedjan och på orterna på kartan.</p>
+      <div class="race-grid reveal d2">
+        <div class="race-left">
+          <div class="panel">
+            <h4>Kedjan från maskin till svar</h4>
+            <div class="chain" id="chain"></div>
+            <div class="chain-info" id="chainInfo"></div>
+          </div>
+          <div class="panel">
+            <h4>Fyra bolags investeringar <span class="dim">(<span class="en">capex</span>, miljarder dollar)</span></h4>
+            <svg id="capexSvg" viewBox="0 0 640 170" role="img" aria-label="Investeringar 2025 och 2026 för Amazon, Alphabet, Microsoft och Meta"></svg>
+          </div>
+        </div>
+        <div class="panel race-se">
+          <h4>Vad byggs i Sverige?</h4>
+          <div class="se-wrap"><svg id="seMap" viewBox="0 0 200 420" role="img" aria-label="Schematisk Sverigekarta med AI-datacenter"></svg>
+          <div class="se-info" id="seInfo"></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 18 · ORDLISTA -->
+  <section class="chapter" id="ordlista" data-title="18 · Buzzword-bingo">
+    <div class="inner">
+      <div class="chapter-num">KAPITEL 18</div>
+      <h2 class="reveal">Ordlistan: <span class="grad">buzzword-bingo</span></h2>
+      <p class="lede reveal d1">Alla orden du kommer att höra, på ett ställe. Klicka på ett kort för förklaringen. Eller slå på bingoläget och kryssa när du hör orden i nästa möte.</p>
+      <div class="gl-top reveal d2"><input id="glSearch" type="search" placeholder="Sök ord… (t.ex. token, agent, RAG)" /><button id="bingoBtn">🎲 Bingoläge</button></div>
+      <div class="gloss reveal d2" id="gloss"></div>
+      <div class="bingo-banner grad" id="bingoBanner">🎉 BINGO!</div>
+    </div>
+  </section>
+
+  <!-- 19 · AVSLUT -->
+  <section class="chapter" id="avslut" data-title="19 · Kom igång">
+    <div class="bg-blob" style="background:var(--accent);left:30%;top:10%"></div>
+    <div class="inner" style="text-align:center">
+      <div class="chapter-num">KAPITEL 19</div>
+      <h2 class="reveal">Kom igång i morgon</h2>
+      <p class="lede reveal d1" style="margin:0 auto">AI är ett verktyg, inte magi. Den som provar lär sig snabbast. Fem saker att ta med sig:</p>
+      <div class="take reveal d2">
+        <div class="tip"><div class="num grad">1</div><b>Prova på riktigt</b><small>Välj en uppgift du gör varje vecka och testa med AI.</small></div>
+        <div class="tip"><div class="num grad">2</div><b>Skriv bättre prompts</b><small>Roll, uppgift, kontext, format, exempel.</small></div>
+        <div class="tip"><div class="num grad">3</div><b>Lita, men kontrollera</b><small>AI kan hallucinera. Du äger slutresultatet.</small></div>
+        <div class="tip"><div class="num grad">4</div><b>Skydda datan</b><small>Använd godkända verktyg för känslig information.</small></div>
+        <div class="tip"><div class="num grad">5</div><b>Börja litet, automatisera sen</b><small>Från chatt → AI i verktygen → arbetsflöden → agenter.</small></div>
+      </div>
+      <div class="qmark grad reveal d3">Frågor?</div>
+    </div>
+  </section>
+
+  <aside class="notes" id="notes"><div class="notes-head">Anteckningar <span class="kbd">N</span></div><div id="notesBody"></div></aside>
+
+  <script src="talk.js?v=16"></script>
+  <script src="en/ui.js?v=18"></script>
+  <script src="en/hero.js?v=18"></script>
+  <script src="en/vad.js?v=18"></script>
+  <script src="en/historia.js?v=18"></script>
+  <script src="en/varfor.js?v=18"></script>
+  <script src="en/lara.js?v=18"></script>
+  <script src="en/natverk.js?v=18"></script>
+  <script src="en/llm.js?v=18"></script>
+  <script src="en/traning.js?v=18"></script>
+  <script src="en/modeller.js?v=18"></script>
+  <script src="en/prompt.js?v=18"></script>
+  <script src="en/hallucination.js?v=18"></script>
+  <script src="en/embeddings.js?v=18"></script>
+  <script src="en/rag.js?v=18"></script>
+  <script src="en/agenter.js?v=18"></script>
+  <script src="en/automation.js?v=18"></script>
+  <script src="en/risker.js?v=18"></script>
+  <script src="en/energi.js?v=18"></script>
+  <script src="en/kapplopning.js?v=18"></script>
+  <script src="en/ordlista.js?v=18"></script>
+  <script src="en/avslut.js?v=18"></script>
+  <script>I18N.applyStatic();</script>
+  <script src="deck.js?v=18"></script>
+  <script src="widgets.js?v=18"></script>
+</body>
+</html>

@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Talk track · AI för nybörjare</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<script src="i18n.js?v=18"></script>
+<script src="theme.js?v=18"></script>
+<style>
+  :root {
+    --bg: #0a0c12; --bg-2: #10131b; --panel: #151925; --panel-2: #1b2030; --line: #2a3145;
+    --text: #eaedf5; --muted: #a8b0c2; --dim: #6b7489;
+    --accent: #9b8cff; --cyan: #38c8f0; --green: #34d399; --pink: #ff7eb6; --orange: #ffb067;
+    --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+    --sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --fs: 21px; --menu: 290px;
+    color-scheme: dark;
+  }
+  :root[data-theme="light"] {
+    --bg: #f6f7fb; --bg-2: #eceef5; --panel: #ffffff; --panel-2: #f1f3f9; --line: #d5d9e5;
+    --text: #141824; --muted: #3f4859; --dim: #6c7588;
+    --accent: #5b45d6; --cyan: #0a7fa8; --green: #0b8a5a; --pink: #c2347a; --orange: #b85d0c;
+    color-scheme: light;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body { background: var(--bg); color: var(--text); font-family: var(--sans); -webkit-font-smoothing: antialiased; overflow: hidden; }
+  b { color: var(--accent); font-weight: 700; }
+  em { color: var(--cyan); font-style: normal; font-weight: 600; }
+  .app { display: grid; grid-template-columns: var(--menu) 1fr; height: 100vh; transition: grid-template-columns .35s ease; }
+  .app.collapsed { grid-template-columns: 0 1fr; }
+  nav { background: var(--bg-2); border-right: 1px solid var(--line); overflow-y: auto; overflow-x: hidden; display: flex; flex-direction: column; }
+  .app.collapsed nav { border-right: none; }
+  .brand { padding: 18px 18px 12px; font: 700 15px var(--sans); white-space: nowrap; display: flex; align-items: center; gap: 8px; }
+  .brand i { width: 12px; height: 12px; border-radius: 50%; background: linear-gradient(90deg, #5b8cff, #9b8cff, #ff7eb6); }
+  .brand span { color: var(--dim); font: 500 12px var(--mono); margin-left: auto; }
+  nav ol { list-style: none; margin: 0; padding: 4px 10px 16px; }
+  nav li a { display: grid; grid-template-columns: 30px 1fr; gap: 4px; align-items: baseline; padding: 9px 10px; border-radius: 10px; color: var(--muted); text-decoration: none; white-space: nowrap; }
+  nav li a:hover { background: var(--panel); color: var(--text); }
+  nav li a .n { font: 600 13px var(--mono); color: var(--dim); }
+  nav li a .t { font-size: 15px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; }
+  nav li a .tm { grid-column: 2; font: 12px var(--mono); color: var(--dim); }
+  nav li a.on { background: var(--panel); color: var(--text); box-shadow: inset 3px 0 0 var(--accent); }
+  nav li a.on .n { color: var(--accent); }
+  nav li a.seen .n::after { content: " ✓"; color: var(--green); }
+  .menu-foot { margin-top: auto; padding: 12px 18px 18px; font: 12px/1.7 var(--mono); color: var(--dim); white-space: nowrap; }
+  .menu-foot kbd { font: 600 11px var(--mono); border: 1px solid var(--line); border-radius: 5px; padding: 1px 6px; color: var(--muted); }
+  main { display: flex; flex-direction: column; height: 100vh; min-width: 0; }
+  header { display: flex; align-items: center; gap: 12px; padding: 14px 26px; border-bottom: 1px solid var(--line); }
+  .icon-btn { background: var(--panel); border: 1px solid var(--line); color: var(--text); border-radius: 10px; padding: 8px 12px; font: 600 14px var(--sans); cursor: pointer; display: inline-flex; align-items: center; gap: 8px; text-decoration: none; }
+  .icon-btn:hover { border-color: var(--accent); }
+  .toggle { color: var(--muted); }
+  .toggle .sw { width: 28px; height: 15px; border-radius: 999px; background: var(--line); position: relative; flex-shrink: 0; }
+  .toggle .sw::after { content: ""; position: absolute; top: 2px; left: 2px; width: 11px; height: 11px; border-radius: 50%; background: var(--dim); transition: transform .25s, background .25s; }
+  .toggle.on { border-color: var(--green); color: var(--green); }
+  .toggle.on .sw { background: color-mix(in srgb, var(--green) 35%, transparent); }
+  .toggle.on .sw::after { transform: translateX(13px); background: var(--green); }
+  @media (max-width: 1100px) { .toggle span { display: none; } }
+  .progress { flex: 1; height: 4px; background: var(--panel-2); border-radius: 3px; overflow: hidden; }
+  .progress i { display: block; height: 100%; background: linear-gradient(90deg, #5b8cff, #9b8cff 35%, #ff7eb6 70%, #ffb067); transition: width .4s ease; }
+  .pos { font: 600 13px var(--mono); color: var(--dim); white-space: nowrap; }
+  .scroll { flex: 1; overflow-y: auto; }
+  article { max-width: 1080px; margin: 0 auto; padding: 34px 40px 60px; font-size: var(--fs); line-height: 1.55; }
+  .kicker { font: 600 calc(var(--fs) * .62) var(--mono); color: var(--dim); letter-spacing: .06em; text-transform: uppercase; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  .time { color: var(--accent); border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent); border-radius: 999px; padding: 2px 10px; }
+  h1 { font-size: calc(var(--fs) * 2.1); line-height: 1.1; margin: .3em 0 .25em; letter-spacing: -.02em; }
+  .goal { font-size: calc(var(--fs) * 1.02); color: var(--muted); margin: 0 0 1.2em; padding-left: 14px; border-left: 3px solid var(--cyan); }
+  h2 { font: 700 calc(var(--fs) * .62) var(--mono); text-transform: uppercase; letter-spacing: .08em; color: var(--dim); margin: 1.5em 0 .5em; }
+  ul.say { margin: 0; padding: 0; list-style: none; }
+  ul.say li { position: relative; padding: .38em 0 .38em 1.25em; }
+  ul.say li::before { content: ""; position: absolute; left: .1em; top: 1.05em; width: .42em; height: .42em; border-radius: 50%; background: var(--accent); }
+  ul.show { margin: 0; padding: 0; list-style: none; font-size: .9em; }
+  ul.show li { padding: .25em 0 .25em 1.6em; position: relative; color: var(--muted); }
+  ul.show li::before { content: "▸"; position: absolute; left: .2em; color: var(--cyan); }
+  .backstage { margin: 0 0 1.2em; background: color-mix(in srgb, var(--muted) 10%, transparent); border: 1px dashed color-mix(in srgb, var(--muted) 55%, transparent); border-radius: 14px; padding: .7em 1em; font-size: .9em; color: var(--muted); }
+  .backstage h2 { margin: 0 0 .3em; }
+  .backstage p { margin: .2em 0; }
+  .value { margin-top: 1.4em; background: color-mix(in srgb, var(--green) 8%, transparent); border: 1px solid color-mix(in srgb, var(--green) 35%, transparent); border-radius: 14px; padding: .8em 1em; }
+  .value h2 { margin: 0 0 .3em; color: var(--green); }
+  .value p { margin: 0; }
+  .ask { display: grid; gap: .6em; }
+  .qa { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: .7em 1em; font-size: .88em; }
+  .qa .q { font-weight: 700; color: var(--text); }
+  .qa .q::before { content: "F  "; font: 700 .8em var(--mono); color: var(--pink); }
+  .qa .a { color: var(--muted); margin-top: .25em; }
+  .next { margin-top: 1.6em; color: var(--muted); font-size: .95em; }
+  .next span { color: var(--dim); font: 600 .7em var(--mono); text-transform: uppercase; letter-spacing: .06em; margin-right: .6em; }
+  footer { display: flex; align-items: center; gap: 12px; padding: 12px 26px; border-top: 1px solid var(--line); }
+  footer .icon-btn { max-width: 42%; }
+  footer .icon-btn span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  footer .spacer { flex: 1; }
+  .hint { font: 12px var(--mono); color: var(--dim); white-space: nowrap; }
+  .icon-btn:disabled { opacity: .35; cursor: default; border-color: var(--line); }
+  .lang-btn { gap: 2px; padding: 3px; }
+  .lang-opt { padding: 5px 8px; border-radius: 7px; color: var(--dim); font: 700 12px var(--mono); white-space: nowrap; }
+  .lang-opt.on { background: var(--panel-2); color: var(--text); }
+  @media (max-width: 760px) {
+    :root { --fs: 18px; --menu: 240px; }
+    article { padding: 22px 16px 40px; }
+    header, footer { padding: 10px 16px; }
+    .hint, .pos { display: none; }
+    .app:not(.collapsed) main { display: none; }
+    .app:not(.collapsed) { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <nav id="menu" aria-label="Avsnitt">
+    <div class="brand"><i></i>Talk track <span>≈ 85 min</span></div>
+    <ol id="list"></ol>
+    <div class="menu-foot">
+      <kbd>←</kbd> <kbd>→</kbd> föregående / nästa<br />
+      <kbd>B</kbd> dölj / visa menyn<br />
+      <kbd>F</kbd> följ decket på / av<br />
+      <kbd>D</kbd> styr decket på / av<br />
+      <kbd>L</kbd> svenska / engelska<br />
+      <kbd>+</kbd> <kbd>−</kbd> textstorlek
+    </div>
+  </nav>
+  <main>
+    <header>
+      <button class="icon-btn" id="menuBtn" title="Dölj eller visa menyn (B)" aria-controls="menu">☰ <span>Meny</span></button>
+      <a class="icon-btn" href="index.html" target="ai-deck" title="Öppna presentationen i ett eget fönster">🖥 <span>Decket</span></a>
+      <div class="progress"><i id="bar"></i></div>
+      <span class="pos" id="pos"></span>
+      <button class="icon-btn toggle" id="followBtn" title="Talk track följer med när du bläddrar i presentationen (F)">⇠ <span>Följ decket</span><i class="sw"></i></button>
+      <button class="icon-btn toggle" id="driveBtn" title="Presentationen följer med när du bläddrar här (D)">⇢ <span>Styr decket</span><i class="sw"></i></button>
+      <button class="icon-btn" data-theme-btn title="Tema">◐ System</button>
+      <button class="icon-btn lang-btn" data-lang-btn title="Språk">SV</button>
+    </header>
+    <div class="scroll" id="scroll"><article id="body"></article></div>
+    <footer>
+      <button class="icon-btn" id="prevBtn">← <span id="prevT"></span></button>
+      <span class="spacer"></span>
+      <span class="hint">← → bläddra · B meny · F följ · D styr · L språk · + − storlek</span>
+      <span class="spacer"></span>
+      <button class="icon-btn" id="nextBtn"><span id="nextT"></span> →</button>
+    </footer>
+  </main>
+</div>
+<script src="talk.js?v=16"></script>
+<script src="en/ui.js?v=18"></script>
+<script src="en/hero.js?v=18"></script>
+<script src="en/vad.js?v=18"></script>
+<script src="en/historia.js?v=18"></script>
+<script src="en/varfor.js?v=18"></script>
+<script src="en/lara.js?v=18"></script>
+<script src="en/natverk.js?v=18"></script>
+<script src="en/llm.js?v=18"></script>
+<script src="en/traning.js?v=18"></script>
+<script src="en/modeller.js?v=18"></script>
+<script src="en/prompt.js?v=18"></script>
+<script src="en/hallucination.js?v=18"></script>
+<script src="en/embeddings.js?v=18"></script>
+<script src="en/rag.js?v=18"></script>
+<script src="en/agenter.js?v=18"></script>
+<script src="en/automation.js?v=18"></script>
+<script src="en/risker.js?v=18"></script>
+<script src="en/energi.js?v=18"></script>
+<script src="en/kapplopning.js?v=18"></script>
+<script src="en/ordlista.js?v=18"></script>
+<script src="en/avslut.js?v=18"></script>
+<script>I18N.applyStatic();</script>
+<script>
+(() => {
+  const T = I18N.talk(window.TALK);
+  const $ = (s) => document.querySelector(s);
+  const store = {
+    get(k, d) { try { const v = localStorage.getItem("aitalk." + k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } },
+    set(k, v) { try { localStorage.setItem("aitalk." + k, JSON.stringify(v)); } catch (e) { /* privat läge */ } },
+  };
+  // Samma kanal som decket: "goto" {id} flyttar decket, "at" {id} säger var decket är, "where" frågar.
+  let chan = null;
+  try { chan = new BroadcastChannel("ai-deck"); } catch (e) { /* gammal webbläsare: ingen synk */ }
+  let i = Math.max(0, T.findIndex((s) => s.id === location.hash.slice(1)));
+  let follow = store.get("follow", true), drive = store.get("drive", true), droveAt = 0;
+  const seen = new Set(store.get("seen", []));
+  let fs = store.get("fs", 21);
+
+  $("#list").innerHTML = T.map((s, k) => `<li><a href="#${s.id}" data-k="${k}"><span class="n">${s.num || "·"}</span><span class="t">${s.title}</span><span class="tm">${s.time}</span></a></li>`).join("");
+
+  const render = (fromDeck) => {
+    const s = T[i];
+    seen.add(s.id); store.set("seen", [...seen]);
+    $("#body").innerHTML = `
+      <div class="kicker">${s.num ? T_("Kapitel") + " " + s.num : T_("Öppning")}<span class="time">${s.time}</span></div>
+      <h1>${s.title}</h1>
+      <p class="goal">${s.goal}</p>
+      ${s.backstage ? `<div class="backstage"><h2>${T_("Bakom kulisserna · säg inte")}</h2>${s.backstage.map((x) => `<p>${x}</p>`).join("")}</div>` : ""}
+      <h2>${T_("Säg")}</h2><ul class="say">${s.say.map((x) => `<li>${x}</li>`).join("")}</ul>
+      ${s.show ? `<h2>${T_("På skärmen")}</h2><ul class="show">${s.show.map((x) => `<li>${x}</li>`).join("")}</ul>` : ""}
+      ${s.value ? `<div class="value"><h2>${T_("Poängen")}</h2><p>${s.value}</p></div>` : ""}
+      ${s.ask ? `<h2>${T_("Om de frågar")}</h2><div class="ask">${s.ask.map(([q, a]) => `<div class="qa"><div class="q">${q}</div><div class="a">${a}</div></div>`).join("")}</div>` : ""}
+      ${s.next ? `<p class="next"><span>${T_("Brygga")}</span>${s.next}</p>` : ""}`;
+    document.querySelectorAll("#list a").forEach((a) => {
+      const k = +a.dataset.k;
+      a.classList.toggle("on", k === i);
+      a.classList.toggle("seen", seen.has(T[k].id) && k !== i);
+    });
+    const on = $(`#list a[data-k="${i}"]`); if (on) on.scrollIntoView({ block: "nearest" });
+    $("#bar").style.width = ((i + 1) / T.length) * 100 + "%";
+    $("#pos").textContent = `${i + 1} / ${T.length}`;
+    $("#prevBtn").disabled = i === 0; $("#nextBtn").disabled = i === T.length - 1;
+    $("#prevT").textContent = i > 0 ? T[i - 1].title : "";
+    $("#nextT").textContent = i < T.length - 1 ? T[i + 1].title : T_("Slut");
+    $("#scroll").scrollTop = 0;
+    if (location.hash !== "#" + s.id) history.replaceState(null, "", "#" + s.id);
+    document.title = `${s.num ? s.num + " · " : ""}${s.title} · Talk track`;
+    if (drive && chan && !fromDeck) { chan.postMessage({ type: "goto", id: s.id }); droveAt = Date.now(); }
+  };
+  const go = (k, fromDeck) => { if (k < 0 || k >= T.length || (k === i && fromDeck)) return; i = k; render(fromDeck); };
+
+  const setMenu = (c) => { $("#app").classList.toggle("collapsed", c); store.set("menu", c); };
+  const paint = () => { $("#followBtn").classList.toggle("on", follow); $("#driveBtn").classList.toggle("on", drive);
+    $("#followBtn").setAttribute("aria-pressed", follow); $("#driveBtn").setAttribute("aria-pressed", drive); };
+  const setFollow = (on) => { follow = on; store.set("follow", on); paint(); if (on && chan) chan.postMessage({ type: "where" }); };
+  const setDrive = (on) => { drive = on; store.set("drive", on); paint(); if (on) render(); };
+  const setFs = (px) => { fs = Math.min(30, Math.max(15, px)); document.documentElement.style.setProperty("--fs", fs + "px"); store.set("fs", fs); };
+
+  $("#list").addEventListener("click", (e) => { const a = e.target.closest("a[data-k]"); if (!a) return; e.preventDefault(); go(+a.dataset.k); if (matchMedia("(max-width: 760px)").matches) setMenu(true); });
+  $("#prevBtn").addEventListener("click", () => go(i - 1));
+  $("#nextBtn").addEventListener("click", () => go(i + 1));
+  $("#menuBtn").addEventListener("click", () => setMenu(!$("#app").classList.contains("collapsed")));
+  $("#followBtn").addEventListener("click", () => setFollow(!follow));
+  $("#driveBtn").addEventListener("click", () => setDrive(!drive));
+  addEventListener("keydown", (e) => {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    if (["ArrowRight", "PageDown", " "].includes(e.key)) { e.preventDefault(); go(i + 1); }
+    else if (["ArrowLeft", "PageUp"].includes(e.key)) { e.preventDefault(); go(i - 1); }
+    else if (e.key === "Home") go(0);
+    else if (e.key === "End") go(T.length - 1);
+    else if (e.key === "b" || e.key === "B") setMenu(!$("#app").classList.contains("collapsed"));
+    else if (e.key === "f" || e.key === "F") setFollow(!follow);
+    else if (e.key === "d" || e.key === "D") setDrive(!drive);
+    else if (e.key === "+" || e.key === "=") setFs(fs + 1);
+    else if (e.key === "-" || e.key === "_") setFs(fs - 1);
+  });
+  addEventListener("hashchange", () => { const k = T.findIndex((s) => s.id === location.hash.slice(1)); if (k >= 0 && k !== i) go(k); });
+  if (chan) chan.onmessage = (e) => {
+    const m = e.data;
+    if (!follow || !m || m.type !== "at") return;
+    if (Date.now() - droveAt < 2500 && m.id !== T[i].id) return;  // decket är på väg dit vi skickade det
+    const k = T.findIndex((s) => s.id === m.id); if (k >= 0) go(k, true);
+  };
+
+  setFs(fs); setMenu(store.get("menu", false)); paint();
+  render(true);
+  if (chan && follow) chan.postMessage({ type: "where" });
+  else if (chan && drive) render();
+})();
+</script>
+</body>
+</html>

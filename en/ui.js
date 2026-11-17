@@ -1,0 +1,46 @@
+// Engelska för menyer, knappar och talk track-sidan. Nycklarna är den svenska originaltexten: ändra dem aldrig.
+I18N.add("ui", {
+  "units": {
+    "AI för nybörjare": "AI for beginners",
+    "🎙 Talk track": "🎙 Talk track",
+    "Anteckningar <span class=\"kbd\">N</span>": "Notes <span class=\"kbd\">N</span>",
+    "Öppna talk track i ett eget fönster": "Open the talk track in a separate window",
+    "Presentatörsanteckningar (N)": "Speaker notes (N)",
+    "En interaktiv introduktion till AI på svenska: historien, maskininlärning, språkmodeller, prompt engineering, embeddings, RAG, agenter, automatisering och risker.": "An interactive introduction to AI: the history, machine learning, language models, prompt engineering, embeddings, RAG, agents, automation and risks.",
+    "<i></i>Talk track <span>≈ 85 min</span>": "<i></i>Talk track <span>≈ 85 min</span>",
+    "<kbd>←</kbd> <kbd>→</kbd> föregående / nästa<br> <kbd>B</kbd> dölj / visa menyn<br> <kbd>F</kbd> följ decket på / av<br> <kbd>D</kbd> styr decket på / av<br> <kbd>L</kbd> svenska / engelska<br> <kbd>+</kbd> <kbd>−</kbd> textstorlek": "<kbd>←</kbd> <kbd>→</kbd> previous / next<br> <kbd>B</kbd> hide / show the menu<br> <kbd>F</kbd> follow the deck on / off<br> <kbd>D</kbd> drive the deck on / off<br> <kbd>L</kbd> Swedish / English<br> <kbd>+</kbd> <kbd>−</kbd> text size",
+    "Meny": "Menu",
+    "Decket": "Deck",
+    "Följ decket": "Follow deck",
+    "Styr decket": "Drive deck",
+    "← → bläddra · B meny · F följ · D styr · L språk · + − storlek": "← → browse · B menu · F follow · D drive · L language · + − size",
+    "Avsnitt": "Sections",
+    "Dölj eller visa menyn (B)": "Hide or show the menu (B)",
+    "Öppna presentationen i ett eget fönster": "Open the presentation in a separate window",
+    "Talk track följer med när du bläddrar i presentationen (F)": "The talk track follows along when you move through the presentation (F)",
+    "Presentationen följer med när du bläddrar här (D)": "The presentation follows along when you move through here (D)",
+    "Talk track · AI för nybörjare": "Talk track · AI for beginners"
+  },
+  "strings": {
+    "Kapitel": "Chapter",
+    "Öppning": "Opening",
+    "Bakom kulisserna · säg inte": "Behind the scenes · don't say",
+    "Säg": "Say",
+    "På skärmen": "On screen",
+    "Poängen": "The point",
+    "Om de frågar": "If they ask",
+    "Brygga": "Bridge",
+    "Slut": "End",
+    "Animationer av · tryck M för att slå på": "Animations off · press M to turn on",
+    "Animationer på · tryck M för att stänga av": "Animations on · press M to turn off",
+    "Menyn är fäst · tryck H för att dölja den automatiskt": "Menu pinned · press H to hide it automatically",
+    "Menyn döljs automatiskt · för musen till överkanten, eller tryck H": "Menu hides automatically · move the mouse to the top edge, or press H",
+    "Inga anteckningar för": "No notes for",
+    "Tema": "Theme",
+    "följer macOS": "follows macOS",
+    "Klicka för": "Click for",
+    "System": "System",
+    "Ljust": "Light",
+    "Mörkt": "Dark"
+  }
+});
